@@ -8,8 +8,6 @@ import { createClient } from 'urql';
 import delegateList from './data/delegates/delegates.json';
 import names from './data/delegates/names.json';
 import ensAbi from '../abi/ENS.json'
-import HighchartsReact from "highcharts-react-official";
-// (i.e. ``http:/\/localhost:8545``)
 const provider = new ethers.providers.JsonRpcProvider(`https://mainnet.infura.io/v3/${import.meta.env.VITE_INFURA_API_KEY}`);
 
 // The provider also allows signing transactions to
@@ -144,7 +142,7 @@ function App() {
     // console.log('Voting Power Address:', filterFrom);
     console.log(logs)
     // console.log('Voting Power Last index:', logsFrom.length.toString());
-    setVP(logsFrom);
+    setVP(logs);
   }
 
   const toggle = () => {
@@ -278,7 +276,7 @@ function App() {
               </div >
             ))} */}
             {logs.map((log, i) => (
-              <div className="flex flex-col p-1">
+              <div key={i} className="flex flex-col p-1">
                 {(log.args.newBalance > log.args.previousBalance) ? (
                   <div className="bg-green-500 shadow-lg p-2 rounded-md flex-col md:w-full cursor-pointer h-full items-center hover:scale-[.98] hover:shadow-lg hover:opacity-80 space-y-4 border-2 hover:animate-pulse">
                     <div className=" flex w-full space-x-2 items-center ">
