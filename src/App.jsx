@@ -7,6 +7,8 @@ import { createClient } from 'urql';
 // If you don't specify a //url//, Ethers connects to the default 
 import delegateList from './data/delegates/delegates.json';
 import names from './data/delegates/names.json';
+import ensAbi from '../abi/ENS.json'
+import HighchartsReact from "highcharts-react-official";
 // (i.e. ``http:/\/localhost:8545``)
 const provider = new ethers.providers.JsonRpcProvider(`https://mainnet.infura.io/v3/${import.meta.env.VITE_INFURA_API_KEY}`);
 
@@ -15,18 +17,7 @@ const provider = new ethers.providers.JsonRpcProvider(`https://mainnet.infura.io
 // For this, we need the account signer...
 const signer = provider.getSigner()
 // You can also use an ENS name for the contract address
-const address = "0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72";
 
-// The ERC-20 Contract ABI, which is a common contract interface
-// for tokens (this is the Human-Readable ABI format)
-import ensAbi from '../abi/ENS.json'
-import HighchartsReact from "highcharts-react-official";
-
-const abi = [
-  "event DelegateChanged(address indexed delegator, address indexed fromDelegate, address indexed toDelegate)",
-  "    event DelegateVotesChanged(address indexed delegate, uint256 previousBalance, uint256 newBalance)",
-  "event Transfer(address indexed from, address indexed to, uint256 value)"
-];
 const API_URL = 'https://api.thegraph.com/subgraphs/name/ensdomains/ens';
 const query = `
 query delegateTextQuery {  
@@ -48,10 +39,16 @@ __typename
   }
 }
   `;
-
 const client = createClient({
   url: API_URL
 })
+
+const address = "0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72";
+const abi = [
+  "event DelegateChanged(address indexed delegator, address indexed fromDelegate, address indexed toDelegate)",
+  "    event DelegateVotesChanged(address indexed delegate, uint256 previousBalance, uint256 newBalance)",
+  "event Transfer(address indexed from, address indexed to, uint256 value)"
+];
 const ensTokenContract = new ethers.Contract(address, ensAbi, provider);
 const ens = new ethers.Contract(address, abi, provider);
 
@@ -110,8 +107,6 @@ function App() {
     rounded.value = with2Decimals
   }
 
-
-
   const getTransfers = async () => {
     const filterFrom = ens.filters.Transfer(delegate);
     const transferLogs = await ens.queryFilter(filterFrom, 14053055, "latest");
@@ -151,7 +146,6 @@ function App() {
     // console.log('Voting Power Last index:', logsFrom.length.toString());
     setVP(logsFrom);
   }
-
 
   const toggle = () => {
     setIsShowingAll(!isShowingAll);
@@ -207,7 +201,7 @@ function App() {
                 <p>'s</p>
               </div>
               <p className="tracking-tight text-base">Delegate Vote Changes</p>
-              <p className="tracking-tighter font-semibold text-base mt-4">Voting Power: <span>{vp}</span></p>
+              {/* <p className="tracking-tighter font-semibold text-base mt-4">Voting Power: <span>{vp}</span></p> */}
             </div>
             <form className="flex w-full bg-stone-50 rounded-md border"
               onSubmit={handleSubmit}>
@@ -227,7 +221,7 @@ function App() {
                 getDelegateVotesChanged();
               }}>
               {/* <div className="bg-red-500 w-4 h-4 rounded-full" /> */}
-              <p className="cursor-pointer bg-gradient-to-br text-transparent bg-clip-text from-yellow-300 to-yellow-400 font-medium">{d}</p>
+              <p className="cursor-pointer bg-gradient-to-br text-transparent bg-clip-text hover:opacity-75 from-blue-500 to-sky-700 dark:from-yellow-300 dark:to-yellow-400 font-medium">{d}</p>
             </div>
             ))}
             <div className="flex items-center space-x-2">
