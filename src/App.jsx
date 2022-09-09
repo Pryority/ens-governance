@@ -140,7 +140,7 @@ function App() {
   const getVotingPower = async () => {
     const filterFrom = ens.filters.DelegateVotesChanged(delegate, null);
     // console.log('Voting Power Address:', filterFrom);
-    console.log(logs)
+    // console.log(logs)
     // console.log('Voting Power Last index:', logsFrom.length.toString());
     setVP(logs);
   }
