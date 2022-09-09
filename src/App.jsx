@@ -37,6 +37,23 @@ __typename
   }
 }
   `;
+
+const userQuery = `{
+    domains(where: {name: "nick.eth"}) {
+      id
+      name
+      labelName
+      labelhash
+    }
+    transfers(first: 5) {
+      id
+      domain {
+        id
+      }
+      blockNumber
+      transactionID
+    }
+  }`
 const client = createClient({
   url: API_URL
 })
@@ -154,8 +171,8 @@ function App() {
   useEffect(() => {
     getDelegateVotesChanged();
     getVotingPower();
-    // getVotingPower();
     fetchData();
+    // getVotingPower();
     // getTransfers();
   }, [])
 
