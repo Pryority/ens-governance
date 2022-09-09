@@ -36,3 +36,6 @@ typechain-types
 cache
 artifacts
 
+
+# Local Netlify folder
+.netlify
