@@ -8,7 +8,7 @@ import { createClient } from 'urql';
 import delegateList from './data/delegates/delegates.json';
 import names from './data/delegates/names.json';
 // (i.e. ``http:/\/localhost:8545``)
-const provider = new ethers.providers.JsonRpcProvider('https://mainnet.infura.io/v3/2ba5e540b7524532a51ccee64ca12e44');
+const provider = new ethers.providers.JsonRpcProvider(`https://mainnet.infura.io/v3/${import.meta.env.REACT_APP_INFURA_API_KEY}`);
 
 // The provider also allows signing transactions to
 // send ether and pay to change state within the blockchain.
@@ -123,7 +123,7 @@ function App() {
     // console.log('filter from', filterFrom);
     const logsFrom = await ens.queryFilter(filterFrom, 14053055, "latest");
     // const logsLength = logsFrom;
-    console.log('DelegeteVotesChanged LOGS:', logsFrom);
+    // console.log('DelegeteVotesChanged LOGS:', logsFrom);
     setLogs(logsFrom);
   }
 
@@ -138,16 +138,16 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     getDelegateVotesChanged();
-    console.log(address);
+    // console.log(address);
     const res = await provider.resolveName(delegate)
-    console.log('Searching:', res);
+    // console.log('Searching:', res);
   }
 
   const getVotingPower = async () => {
     const filterFrom = ens.filters.DelegateVotesChanged(delegate, null);
-    console.log('Voting Power Address:', filterFrom);
+    // console.log('Voting Power Address:', filterFrom);
     console.log(logs)
-    console.log('Voting Power Last index:', logsFrom.length.toString());
+    // console.log('Voting Power Last index:', logsFrom.length.toString());
     setVP(logsFrom);
   }
 
@@ -174,7 +174,7 @@ function App() {
           <div className="flex items-center space-x-8 w-full px-8">
             <div className="tracking-wider font-medium text-2xl flex flex-col w-2/5">
               <div className="flex items-center">
-                <p className="truncate w-2/3 font-bold text-end text-3xl">{delegate}</p>
+                <p className="truncate w-2/3 font-bold text-end text-3xl">{delegate}{import.meta.env.VITE_MSG}</p>
                 <p>'s</p>
               </div>
               <p className="tracking-tight">Delegate Vote Changes</p>
@@ -197,8 +197,8 @@ function App() {
                 console.log('delegate:', d)
                 getDelegateVotesChanged();
               }}>
-              <div className="bg-red-500 w-4 h-4 rounded-full" />
-              <p className="cursor-pointer">{d}</p>
+              {/* <div className="bg-red-500 w-4 h-4 rounded-full" /> */}
+              <p className="cursor-pointer bg-gradient-to-br text-transparent bg-clip-text from-yellow-300 to-yellow-400 font-medium">{d}</p>
             </div>
             ))}
             <div className="flex items-center space-x-2">
