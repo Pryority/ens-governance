@@ -55,6 +55,7 @@ function App() {
   const [transferLogs, setTransferLogs] = useState([]);
   const [vp, setVP] = useState(0);
   const [delegate, setDelegate] = useState("0x81b287c0992B110ADEB5903Bf7E2d9350C80581a")
+  const [delegateInput, setDelegateInput] = useState("")
   const [delegateList, setDelegateList] = useState([]);
   const [isShowingAll, setIsShowingAll] = useState(false);
 
@@ -124,7 +125,7 @@ function App() {
   const handleChange = async (e) => {
     const newInput = e.target.value;
     // const name = await provider.lookupAddress(address);
-    setDelegate(current => ({ ...current, newInput }));
+    setDelegateInput(current => ({ ...current, newInput }));
     ;
     console.log(delegate)
   }
@@ -133,7 +134,7 @@ function App() {
     e.preventDefault();
     getDelegateVotesChanged();
     // console.log(address);
-    const res = await provider.resolveName(delegate)
+    const res = await provider.resolveName(delegateInput)
     // console.log('Searching:', res);
   }
 
@@ -159,22 +160,22 @@ function App() {
   }, [])
 
   return (
-    <div className="flex flex-col h-full justify-start items-center bg-gradient-to-tr from-blue-500/20 to-sky-400/20 relative">
-      <div className='z-50 block w-full justify-center items-center bg-sky-500 text-white p-4 '>
+    <div className="flex flex-col h-full justify-start items-center bg-sky-50/20 relative">
+      <div className='z-50 fixed block w-full justify-center items-center bg-sky-500 text-white p-4' onClick={toggle}>
         <div className="flex justify-between items-center">
           <h1 className="w-full font-black uppercase text-4xl md:text-6xl tracking-tighter">ENS Delegates</h1>
           <p className="w-2/3 text-end leading-4">A visualization tool for ENS governance allocation.</p>
         </div>
       </div>
-      <div className={isShowingAll ? ('z-50 block w-full justify-center items-center bg-stone-50 hover:opacity-80 text-black/50 cursor-pointer p-[0.62] px-4') : ('z-50 block w-full justify-center items-center bg-gradient-to-b from-stone-50 to-stone-50/20 hover:opacity-80 text-black/50 cursor-pointer p-[0.62] px-4')}
+      {/* <div className={isShowingAll ? ('z-50 block w-full justify-center items-center bg-stone-50 hover:opacity-80 text-black/50 cursor-pointer p-[0.62] px-4') : ('z-50 block w-full justify-center items-center bg-gradient-to-b from-stone-50 to-stone-50/20 hover:opacity-80 text-black/50 cursor-pointer p-[0.62] px-4')}
         onClick={toggle}
       >
         <div className="flex justify-between items-center">
-          <p className="w-full font-black uppercase tracking-tighter">{isShowingAll ? 'Hide All' : 'View All'}</p>
+          <p className="w-full font-bold uppercase text-xs">{isShowingAll ? 'Hide All' : 'View All'}</p>
         </div>
-      </div>
+      </div> */}
       {isShowingAll && (
-        <div className='z-50 block w-full justify-center items-center bg-stone-50 text-black/50 p-4'
+        <div className=' mt-32 block w-full justify-center items-center bg-stone-50 text-black/50 p-4'
         >
           <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-10 justify-center items-center overflow-y-scroll">
             {names.map((d, i) =>
@@ -190,7 +191,7 @@ function App() {
           </div>
         </div>
       )}
-      <div className="flex w-full h-screen mt-8">
+      <div className="flex w-full h-screen mt-32">
         <div className="flex flex-col w-full space-y-4 items-center p-2 bg-sky-50/20;">
           <div className="flex flex-col md:flex-row items-center space-x-8 w-full px-8">
             <div className="tracking-wider font-medium text-2xl flex space-x-4 md:spacing-x-0 md:flex-col md:w-3/5 w-2/5">
@@ -201,7 +202,7 @@ function App() {
               <p className="tracking-tight text-base">Delegate Vote Changes</p>
               {/* <p className="tracking-tighter font-semibold text-base mt-4">Voting Power: <span>{vp}</span></p> */}
             </div>
-            <form className="flex w-full bg-stone-50 rounded-md border"
+            <form className="flex w-full bg-blue-200/20 rounded-md border"
               onSubmit={handleSubmit}>
               <input placeholder="Enter a Delegate.eth" className="bg-transparent p-1 px-2 flex w-full text-black rounded-l-md focus:ring-none focus:outline-none"
                 onChange={handleChange} />
