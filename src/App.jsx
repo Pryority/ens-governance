@@ -1,7 +1,6 @@
 
 import { ethers } from "ethers";
 import { useEffect, useState } from 'react'
-import Highcharts from 'highcharts';
 import Marquee from "react-fast-marquee";
 import { createClient } from 'urql';
 // If you don't specify a //url//, Ethers connects to the default 
